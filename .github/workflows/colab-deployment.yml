@@ -34,7 +34,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements-colab.txt
         pip install pytest pytest-cov
-        pip install wheel setuptools build
+        pip install wheel
         
     - name: Run tests
       env:
@@ -45,6 +45,7 @@ jobs:
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
       with:
+        token: ${{ secrets.CODECOV_TOKEN }}
         file: ./coverage.xml
         flags: unittests
         name: codecov-umbrella
