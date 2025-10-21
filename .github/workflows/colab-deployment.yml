@@ -19,7 +19,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.10'
+        python-version: '3.10.18'
         
     - name: Cache pip dependencies
       uses: actions/cache@v4
@@ -34,6 +34,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements-colab.txt
         pip install pytest pytest-cov
+        pip install wheel setuptools build
         
     - name: Run tests
       env:
@@ -50,7 +51,7 @@ jobs:
         
     - name: Build package
       run: |
-        python setup.py sdist bdist_wheel
+        python -m build --wheel --sdist
         
     - name: Upload artifacts
       uses: actions/upload-artifact@v4

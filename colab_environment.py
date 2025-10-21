@@ -69,13 +69,14 @@ class ColabEnvironmentManager:
     
     def install_additional_dependencies(self) -> bool:
         """
-        Install additional dependencies mentioned in README.md.
+        Install additional dependencies mentioned in README.md (exact order).
         
         Returns:
             bool: True if installation successful, False otherwise
         """
         try:
-            # Install cares_reinforcement_learning (as per README.md)
+            # Step 1: cares_reinforcement_learning (README.md Step 1)
+            print("📦 Installing cares_reinforcement_learning (README.md Step 1)...")
             cares_path = self.base_path / "cares_reinforcement_learning"
             if not cares_path.exists():
                 subprocess.run([
@@ -91,9 +92,27 @@ class ColabEnvironmentManager:
                 "pip", "install", "-e", "."
             ], check=True, cwd=cares_path)
             
-            # Install gymnasium_environments (as per README.md)
-            gym_path = self.base_path / "gymnasium_envrionments"
+            # Step 2: showdown_gym (README.md Step 2 - primary package)
+            print("📦 Installing showdown_gym (README.md Step 2 - primary package)...")
+            gym_path = self.base_path / "showdown_gym"
             if not gym_path.exists():
+                subprocess.run([
+                    "git", "clone", 
+                    "https://github.com/UoA-CARES/showdown_gym.git"
+                ], check=True, cwd=self.base_path)
+            
+            subprocess.run([
+                "pip", "install", "-r", "requirements.txt"
+            ], check=True, cwd=gym_path)
+            
+            subprocess.run([
+                "pip", "install", "-e", "."
+            ], check=True, cwd=gym_path)
+            
+            # Step 3: gymnasium_environments (README.md Step 3)
+            print("📦 Installing gymnasium_environments (README.md Step 3)...")
+            gym_env_path = self.base_path / "gymnasium_envrionments"
+            if not gym_env_path.exists():
                 subprocess.run([
                     "git", "clone", 
                     "https://github.com/UoA-CARES/gymnasium_envrionments.git"
@@ -101,10 +120,11 @@ class ColabEnvironmentManager:
             
             subprocess.run([
                 "pip", "install", "-r", "requirements.txt"
-            ], check=True, cwd=gym_path)
+            ], check=True, cwd=gym_env_path)
             
-            print("✅ Additional dependencies installed!")
-            print("📝 Following README.md package installation order")
+            print("✅ All README.md dependencies installed!")
+            print("📝 Following exact README.md package installation order")
+            print("🐍 All packages compatible with Python 3.10")
             return True
             
         except subprocess.CalledProcessError as e:

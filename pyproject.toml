@@ -1,0 +1,64 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "showdown_gym"
+version = "0.1.0"
+description = "Pokemon Showdown Reinforcement Learning Environment"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "CARES", email = "cares@aucklanduni.ac.nz"}
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+keywords = ["pokemon", "showdown", "reinforcement-learning", "gym", "environment"]
+dependencies = [
+    "poke-env==0.10.0",
+    "numpy==2.2.5",
+]
+
+[project.optional-dependencies]
+colab = [
+    "jupyter>=1.0.0",
+    "ipywidgets>=8.0.0",
+    "tqdm>=4.65.0",
+    "requests>=2.25.0",
+    "gymnasium>=0.29.0",
+    "stable-baselines3>=2.0.0",
+    "tensorboard>=2.13.0",
+    "matplotlib>=3.7.0",
+    "seaborn>=0.12.0",
+    "pandas>=2.0.0",
+]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "wheel>=0.40.0",
+    "build>=0.10.0",
+    "setuptools>=65.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/UoA-CARES/showdown_gym"
+Repository = "https://github.com/UoA-CARES/showdown_gym"
+Issues = "https://github.com/UoA-CARES/showdown_gym/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["showdown_gym*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
