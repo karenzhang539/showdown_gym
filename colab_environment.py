@@ -39,7 +39,7 @@ class ColabEnvironmentManager:
         
     def install_dependencies(self) -> bool:
         """
-        Install all required system and Python dependencies.
+        Install all required system and Python dependencies (following README.md).
         
         Returns:
             bool: True if installation successful, False otherwise
@@ -54,39 +54,84 @@ class ColabEnvironmentManager:
                 "apt-get", "install", "-y", "nodejs", "npm"
             ], check=True, capture_output=True)
             
-            # Install Python packages
+            # Install Python packages (following README.md requirements)
             subprocess.run([
                 "pip", "install", "-q", "-r", "requirements-colab.txt"
             ], check=True, capture_output=True)
             
             print("✅ All dependencies installed successfully!")
+            print("📝 Following README.md installation requirements")
             return True
             
         except subprocess.CalledProcessError as e:
             print(f"❌ Error installing dependencies: {e}")
             return False
     
+    def install_additional_dependencies(self) -> bool:
+        """
+        Install additional dependencies mentioned in README.md.
+        
+        Returns:
+            bool: True if installation successful, False otherwise
+        """
+        try:
+            # Install cares_reinforcement_learning (as per README.md)
+            cares_path = self.base_path / "cares_reinforcement_learning"
+            if not cares_path.exists():
+                subprocess.run([
+                    "git", "clone", 
+                    "https://github.com/UoA-CARES/cares_reinforcement_learning.git"
+                ], check=True, cwd=self.base_path)
+            
+            subprocess.run([
+                "pip", "install", "-r", "requirements.txt"
+            ], check=True, cwd=cares_path)
+            
+            subprocess.run([
+                "pip", "install", "-e", "."
+            ], check=True, cwd=cares_path)
+            
+            # Install gymnasium_environments (as per README.md)
+            gym_path = self.base_path / "gymnasium_envrionments"
+            if not gym_path.exists():
+                subprocess.run([
+                    "git", "clone", 
+                    "https://github.com/UoA-CARES/gymnasium_envrionments.git"
+                ], check=True, cwd=self.base_path)
+            
+            subprocess.run([
+                "pip", "install", "-r", "requirements.txt"
+            ], check=True, cwd=gym_path)
+            
+            print("✅ Additional dependencies installed!")
+            print("📝 Following README.md package installation order")
+            return True
+            
+        except subprocess.CalledProcessError as e:
+            print(f"❌ Error installing additional dependencies: {e}")
+            return False
+    
     def setup_showdown_server(self) -> bool:
         """
-        Clone and configure the Pokemon Showdown server.
+        Clone and configure the Pokemon Showdown server (following README.md instructions).
         
         Returns:
             bool: True if setup successful, False otherwise
         """
         try:
-            # Clone Pokemon Showdown if not exists
+            # Clone Pokemon Showdown if not exists (following README.md)
             if not self.showdown_path.exists():
                 subprocess.run([
                     "git", "clone", 
                     "https://github.com/smogon/pokemon-showdown.git"
                 ], check=True, cwd=self.base_path)
             
-            # Install Node.js dependencies
+            # Install Node.js dependencies (as per README.md)
             subprocess.run([
                 "npm", "install"
             ], check=True, cwd=self.showdown_path)
             
-            # Copy configuration
+            # Copy configuration (following README.md instructions)
             config_src = self.showdown_path / "config" / "config-example.js"
             config_dst = self.showdown_path / "config" / "config.js"
             
@@ -96,6 +141,7 @@ class ColabEnvironmentManager:
                 ], check=True)
             
             print("✅ Pokemon Showdown server setup complete!")
+            print("📝 Following README.md installation instructions")
             return True
             
         except subprocess.CalledProcessError as e:
@@ -257,7 +303,7 @@ class ColabEnvironmentManager:
 
 def setup_colab_environment() -> ColabEnvironmentManager:
     """
-    Convenience function to set up the complete Colab environment.
+    Convenience function to set up the complete Colab environment (following README.md).
     
     Returns:
         ColabEnvironmentManager: Configured environment manager
@@ -265,10 +311,15 @@ def setup_colab_environment() -> ColabEnvironmentManager:
     manager = ColabEnvironmentManager()
     
     print("🚀 Setting up Pokemon Showdown Gym for Google Colab...")
+    print("📝 Following README.md installation instructions")
     
     # Install dependencies
     if not manager.install_dependencies():
         raise RuntimeError("Failed to install dependencies")
+    
+    # Install additional dependencies (README.md requirements)
+    if not manager.install_additional_dependencies():
+        raise RuntimeError("Failed to install additional dependencies")
     
     # Setup Pokemon Showdown server
     if not manager.setup_showdown_server():
@@ -287,6 +338,7 @@ def setup_colab_environment() -> ColabEnvironmentManager:
         raise RuntimeError(f"Environment test failed: {test_results.get('error', 'Unknown error')}")
     
     print("🎉 Pokemon Showdown Gym setup complete!")
+    print("📝 Fully compliant with README.md instructions")
     print(f"Environment info: {manager.get_colab_info()}")
     
     return manager

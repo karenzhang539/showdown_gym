@@ -36,6 +36,8 @@ jobs:
         pip install pytest pytest-cov
         
     - name: Run tests
+      env:
+        CI: true
       run: |
         python -m pytest tests/ -v --cov=showdown_gym --cov-report=xml
         
