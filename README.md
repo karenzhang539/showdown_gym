@@ -461,3 +461,11 @@ The primary goal is to train an agent capable of beating the ***max*** expert ag
 | simple (≥ 50%)          | +1%             |
 
 
+
+
+## 🚀 Quick Start with Google Colab
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/UoA-CARES/showdown_gym/blob/main/colab_setup.ipynb)
+
+Click the badge above to open this repository directly in Google Colab!
+

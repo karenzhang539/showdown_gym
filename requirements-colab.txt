@@ -1,0 +1,26 @@
+# Core dependencies for Pokemon Showdown Gym
+poke-env==0.10.0
+numpy==2.2.5
+
+# Reinforcement Learning frameworks
+gymnasium>=0.29.0
+stable-baselines3>=2.0.0
+tensorboard>=2.13.0
+
+# Data science and visualization
+matplotlib>=3.7.0
+seaborn>=0.12.0
+pandas>=2.0.0
+
+# Additional utilities for Colab
+jupyter>=1.0.0
+ipywidgets>=8.0.0
+tqdm>=4.65.0
+
+# Optional: For advanced RL algorithms
+torch>=2.0.0
+torchvision>=0.15.0
+
+# Optional: For hyperparameter optimization
+optuna>=3.0.0
+ray[tune]>=2.5.0
